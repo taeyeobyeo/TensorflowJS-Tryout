@@ -1,65 +1,72 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <Train/>
-    </v-main>
-  </v-app>
+    <v-app>
+        <div class="overlay" :hidden="overlay"></div>
+        <v-tabs
+            fixed-tabs
+            dark
+        >
+            <v-tab to="/">Linear Model</v-tab>
+            <v-tab to="/Curve">Curve Model</v-tab>
+            <!-- <v-tab>Item Three</v-tab> -->
+        </v-tabs>
+        <v-main>
+            <router-view/>
+        </v-main>
+    </v-app>
 </template>
 
-<script>
-import Train from "./components/Train";
-export default {
-  name: 'App',
-  components: {
-    Train
-  },
-  data: () => ({
-    //
-  }),
-  mounted: function() {
-    let elHtml = document.getElementsByTagName('html')[0]
-    elHtml.style.overflowY = 'auto'
-  },
-  destroyed: function() {
-    let elHtml = document.getElementsByTagName('html')[0]
-    elHtml.style.overflowY = null
-  },
-};
+<script lang="ts">
+import Vue from 'vue';
+import Vuex from "./store/index";
+
+export default Vue.extend({
+    name: "App",
+    data: () => ({
+    }),
+    computed: {
+        overlay() {
+            return Vuex.state.block === 0;
+        }
+    },
+    methods: {},
+})
+
 </script>
+
+<style lang="scss">
+    #app {
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+    }
+
+    #nav {
+        padding: 30px;
+
+        a {
+            font-weight: bold;
+            color: #2c3e50;
+
+            &.router-link-exact-active {
+            color: #42b983;
+            }
+        }
+    }
+
+    .tvc {
+        margin: 1.0rem;
+    }
+
+    .overlay {
+        z-index: 100;
+        position: absolute;
+        background: blueviolet;
+        opacity: 0.3;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+    }
+</style>
